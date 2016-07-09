@@ -51,7 +51,7 @@ angular
     var $this = this;
 
     return $geolocation.getCurrentPosition({
-      timeout: 10000
+      timeout: 5000
     }).then(function(position) {
 
       var url = "https://docs.google.com/forms/d/"+$this.formId+"/formResponse?submit=Submit";
@@ -74,6 +74,7 @@ angular
       },function(error) {
         console.log(error);
       });
+
     });
 
   };

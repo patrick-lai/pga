@@ -12,20 +12,25 @@
        md-component-id="left"
        md-disable-backdrop
        md-whiteframe="4">
-     <md-toolbar class="md-dark" style="background-color: #222;">
-        <md-input-container style="margin: 1em; margin-bottom: 0;">
-           <label>Search</label>
-           <md-icon class="name">
-             <i class="fa fa-times interactive pop-text" ng-click="close('left')" aria-hidden="true"></i>
-           </md-icon>
-           <input ng-model="findFilter" ng-model-options="{debounce: 80}">
-        </md-input-container>
-     </md-toolbar>
      <md-content layout-padding ng-controller="PokedexCtrl">
        <!-- content -->
+       <md-input-container style="margin: 1em; margin-bottom: 0;">
+          <label>Search</label>
+          <md-icon class="name">
+            <i class="fa fa-times interactive pop-text" ng-click="close('left')" aria-hidden="true"></i>
+          </md-icon>
+          <input ng-model="findFilter" ng-model-options="{debounce: 80}">
+       </md-input-container>
+
        <ul style="margin: 0;">
-        <li ng-repeat="pokemon in pokemons | filter: findFilter" ng-click="setPokemon(pokemon)" class="pokemon animate-fade" ng-class=" {'active' : currentPokemon == pokemon }">
-          <div class="pop-text interactive"><span class="pokemon-id">{{pokemon.id}}</span> {{pokemon.name}}</div>
+        <li layout="row" ng-repeat="pokemon in pokemons | filter: findFilter" class="pokemon animate-fade" ng-class=" {'active' : currentPokemon == pokemon }">
+            <div flex class="pop-text interactive" ng-click="setPokemon(pokemon)">
+              <span class="pokemon-id">{{pokemon.id}}</span>
+              {{pokemon.name}}
+            </div>
+            <div flex style="max-width: 25px;" ng-click="reportSighting(pokemon)">
+              <i class="fa fa-eye pop-text interactive" aria-hidden="true"></i>
+            </div>
         </li>
         <li class="pokemon">
           <div class="interactive pop-text" ng-click="openLegal()">(<i class="fa fa-gavel" aria-hidden="true"> Legal</i>)</div>
@@ -33,41 +38,14 @@
        </ul>
      </md-content>
    </md-sidenav>
-   <!-- Right -->
-   <md-sidenav
-       class="md-sidenav-right"
-       md-component-id="right"
-       md-disable-backdrop
-       md-whiteframe="4">
-     <md-toolbar class="md-warn">
-       <md-input-container style="margin: 1em;  margin-bottom: 0;">
-          <label style="color: black; text-shadow: none;">What did you see</label>
-          <md-icon class="name">
-            <i class="fa fa-times interactive pop-text" ng-click="close('right')" aria-hidden="true"></i>
-          </md-icon>
-          <input ng-model="reportFilter" ng-model-options="{debounce: 80}">
-       </md-input-container>
-     </md-toolbar>
-     <md-content layout-padding ng-controller="ReportCtrl">
-       <!-- content -->
-       <ul style="margin: 0;">
-        <li ng-repeat="pokemon in pokemons | filter: reportFilter" ng-click="reportSighting(pokemon)" class="pokemon animate-fade">
-          <div class="pop-text interactive"><span class="pokemon-id">{{pokemon.id}}</span> {{pokemon.name}}</div>
-        </li>
-       </ul>
-     </md-content>
-   </md-sidenav>
+
  </section>
 
 <div style="height: 100vh;">
 
-    <md-button ng-click="toggleLeft()" class="md-raised md-primary" style=" left: 0; position: fixed; z-index: 10; color: white;">
+    <md-button ng-click="toggleLeft()" class="md-raised md-primary" style="height: 50px; font-weight: bold; left: 0; position: fixed; z-index: 10; color: white;">
       <span ng-hide="currentPokemon">Find Pokemon</span>
       <span ng-show="currentPokemon">{{currentPokemon.name}} Sightings</span>
-    </md-button>
-
-    <md-button ng-click="toggleRight()" class="md-raised md-warn" style=" right: 0; position: fixed; z-index: 10;">
-      Report a Sighting
     </md-button>
 
     <div class="full-height" ng-include="mapsUrl" ng-></div>
