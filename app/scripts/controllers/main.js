@@ -4296,13 +4296,13 @@ angular.module('pgaApp')
 
   $scope.getIframeUrl = function(){
 
-    var pokemonId = $rootScope.currentPokemon ? parseInt($rootScope.currentPokemon.id) : 0;
+    var pokemonId = $rootScope.currentPokemon ? "where+col2+%3D+" + parseInt($rootScope.currentPokemon.id) : '';
 
     if(!$rootScope.currentLocation){
       $rootScope.currentLocation = "&lat=-33.50&lng=150.84279004958148";
     }
 
-    var iframeUrl = "https://www.google.com/fusiontables/embedviz?q=select+col3+from+1b4XoPuboTQ-x6K_uoIpjEg0k4Nwa8gEewhFpDypw+where+col2+%3D+"+pokemonId+"&viz=MAP&h=false&"+$rootScope.currentLocation+"&t=1&z=15&l=col3&y=3&tmplt=4&hml=GEOCODABLE";
+    var iframeUrl = "https://www.google.com/fusiontables/embedviz?q=select+col3+from+1b4XoPuboTQ-x6K_uoIpjEg0k4Nwa8gEewhFpDypw+"+pokemonId+"&viz=MAP&h=false&"+$rootScope.currentLocation+"&t=1&z=15&l=col3&y=3&tmplt=4&hml=GEOCODABLE";
 
     return $sce.trustAsResourceUrl(iframeUrl);
   };
