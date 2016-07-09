@@ -24,11 +24,11 @@
 
        <ul style="margin: 0;">
         <li layout="row" ng-repeat="pokemon in pokemons | filter: findFilter" class="pokemon animate-fade" ng-class=" {'active' : currentPokemon == pokemon }">
-            <div flex class="pop-text interactive" ng-click="setPokemon(pokemon)">
-              <span class="pokemon-id">{{pokemon.id}}</span>
-              {{pokemon.name}}
+            <div flex class="pop-text">
+              <span class="pokemon-id interactive" ng-click="setPokemon(pokemon)">{{pokemon.id}}</span>
+              <span class="interactive" ng-click="setPokemon(pokemon)">{{pokemon.name}}</span>
             </div>
-            <div flex style="max-width: 25px;" ng-click="reportSighting(pokemon)">
+            <div flex style="max-width: 50px; text-align: right;" ng-click="reportSighting(pokemon)">
               <i class="fa fa-eye pop-text interactive" aria-hidden="true"></i>
             </div>
         </li>
