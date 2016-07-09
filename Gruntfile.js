@@ -543,6 +543,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('heroku', [
-    'build'
+    // Do nothing because heroku cant run compass
   ]);
 };
