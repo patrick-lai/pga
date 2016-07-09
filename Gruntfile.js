@@ -446,7 +446,7 @@ module.exports = function (grunt) {
         'compass'
       ],
       dist: [
-        // 'compass:dist',
+        'compass:dist',
         'svgmin'
       ]
     },
