@@ -1,23 +1,75 @@
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
-</div>
+<!-- <div id="OverLay" class="animate-slideDown interactive" ng-click="hideOverlay = true" ng-show="hideOverlay">
+  <h1 class="pop-text">
+    Welcome to the Pokemon Go Assistant
+    <span style="font-size: 12pt; display: block; margin: .5em 0;"></span>
+  </h1>
+</div> -->
 
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
+<section layout="row" flex>
+   <!-- Left -->
+   <md-sidenav
+       class="md-sidenav-left"
+       md-component-id="left"
+       md-disable-backdrop
+       md-whiteframe="4">
+     <md-toolbar style="background-color: transparent;">
+        <md-input-container style="margin: 1em;">
+           <label>Search</label>
+           <md-icon class="name">
+             <i class="fa fa-times interactive pop-text" ng-click="close('left')" aria-hidden="true"></i>
+           </md-icon>
+           <input ng-model="findFilter" ng-model-options="{debounce: 80}">
+        </md-input-container>
+     </md-toolbar>
+     <md-content layout-padding ng-controller="PokedexCtrl">
+       <!-- content -->
+       <ul style="margin: 0;">
+         <li class="pokemon">
+           <div class="interactive pop-text" ng-click="openLegal()">(<i class="fa fa-gavel" aria-hidden="true"> Legal</i>)</div>
+         </li>
+        <li ng-repeat="pokemon in pokemons | filter: findFilter" ng-click="setPokemon(pokemon)" class="pokemon animate-fade" ng-class=" {'active' : currentPokemon == pokemon }">
+          <div class="pop-text interactive">{{pokemon.id}} {{pokemon.name}}</div>
+        </li>
+       </ul>
+     </md-content>
+   </md-sidenav>
+   <!-- Right -->
+   <md-sidenav
+       class="md-sidenav-right"
+       md-component-id="right"
+       md-disable-backdrop
+       md-whiteframe="4">
+     <md-toolbar class="md-warn">
+       <md-input-container style="margin: 1em;">
+          <label style="color: black; text-shadow: none;">What did you see</label>
+          <md-icon class="name">
+            <i class="fa fa-times interactive pop-text" ng-click="close('right')" aria-hidden="true"></i>
+          </md-icon>
+          <input ng-model="reportFilter" ng-model-options="{debounce: 80}">
+       </md-input-container>
+     </md-toolbar>
+     <md-content layout-padding ng-controller="ReportCtrl">
+       <!-- content -->
+       <ul style="margin: 0;">
+        <li ng-repeat="pokemon in pokemons | filter: reportFilter" ng-click="reportSighting(pokemon)" class="pokemon animate-fade">
+          <div class="pop-text interactive">{{pokemon.id}} {{pokemon.name}}</div>
+        </li>
+       </ul>
+     </md-content>
+   </md-sidenav>
+ </section>
 
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
+<div style="height: 100vh;">
 
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
+    <md-button ng-click="toggleLeft()" class="md-raised md-primary" style=" left: 0; position: fixed; z-index: 10; color: white;">
+      <span ng-hide="currentPokemon">Find Pokemon</span>
+      <span ng-show="currentPokemon">{{currentPokemon.name}} Sightings</span>
+    </md-button>
+
+    <md-button ng-click="toggleRight()" class="md-raised md-warn" style=" right: 0; position: fixed; z-index: 10;">
+      Report a Sighting
+    </md-button>
+
+    <div class="full-height" ng-include="mapsUrl" ng-></div>
+
 </div>
