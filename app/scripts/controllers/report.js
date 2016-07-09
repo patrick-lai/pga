@@ -34,6 +34,8 @@ angular.module('pgaApp')
           'Your Sighting has been marked',
           'success'
         );
+
+        $scope.close();
       })
     })
   }

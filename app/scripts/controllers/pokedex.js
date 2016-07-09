@@ -20,6 +20,7 @@ angular.module('pgaApp')
 
   $scope.setPokemon = function(pokemon){
     $rootScope.currentPokemon = pokemon;
+    $scope.close();
   }
 
 });
