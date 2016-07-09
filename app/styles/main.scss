@@ -116,7 +116,7 @@ img.pop {
     -webkit-transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
     transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
     &:hover {
-        -webkit-transform: scale(1.2,1.2);
+        transform: scale(1.2,1.2);
         text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
     }
 }
@@ -172,6 +172,28 @@ li.pokemon{
  .md-input, .fa-times{
    color: #333 !important;
    border-color: #333 !important;
+  }
+}
+
+.bottomBar{
+  color: #333;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  a {
+    color: #333;
+    text-decoration: none;
+  }
+  font-weight: bold;
+  padding: .5em;
+  text-shadow: 5px 5px 10px rgba(255, 255, 255, 1);
+  -webkit-transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  .pop-text:hover {
+      color: #FF754A;
+      -webkit-transform: scale(2,2) !important;
+      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   }
 }
 
