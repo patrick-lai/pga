@@ -1,9 +1,7 @@
 # pga
 
-This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
-version 0.15.1.
-
-## Build & development
+Run bower install
+Run npm install
 
 Run `grunt` for building and `grunt serve` for preview.
 
