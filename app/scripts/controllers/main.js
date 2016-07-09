@@ -4214,7 +4214,7 @@ var whereIsPokemonData = [
     "species": "Genetic Pokémon",
     "type": [
       "Psychic"
-    ],b
+    ],
     "height": "6′7″ (2.01m)",
     "weight": "269 lbs (122.0 kg)",
     "abilities": [
