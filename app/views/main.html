@@ -12,8 +12,8 @@
        md-component-id="left"
        md-disable-backdrop
        md-whiteframe="4">
-     <md-toolbar style="background-color: transparent;">
-        <md-input-container style="margin: 1em;">
+     <md-toolbar class="md-dark" style="background-color: #222;">
+        <md-input-container style="margin: 1em; margin-bottom: 0;">
            <label>Search</label>
            <md-icon class="name">
              <i class="fa fa-times interactive pop-text" ng-click="close('left')" aria-hidden="true"></i>
@@ -24,11 +24,11 @@
      <md-content layout-padding ng-controller="PokedexCtrl">
        <!-- content -->
        <ul style="margin: 0;">
-         <li class="pokemon">
-           <div class="interactive pop-text" ng-click="openLegal()">(<i class="fa fa-gavel" aria-hidden="true"> Legal</i>)</div>
-         </li>
         <li ng-repeat="pokemon in pokemons | filter: findFilter" ng-click="setPokemon(pokemon)" class="pokemon animate-fade" ng-class=" {'active' : currentPokemon == pokemon }">
-          <div class="pop-text interactive">{{pokemon.id}} {{pokemon.name}}</div>
+          <div class="pop-text interactive"><span class="pokemon-id">{{pokemon.id}}</span> {{pokemon.name}}</div>
+        </li>
+        <li class="pokemon">
+          <div class="interactive pop-text" ng-click="openLegal()">(<i class="fa fa-gavel" aria-hidden="true"> Legal</i>)</div>
         </li>
        </ul>
      </md-content>
@@ -40,7 +40,7 @@
        md-disable-backdrop
        md-whiteframe="4">
      <md-toolbar class="md-warn">
-       <md-input-container style="margin: 1em;">
+       <md-input-container style="margin: 1em;  margin-bottom: 0;">
           <label style="color: black; text-shadow: none;">What did you see</label>
           <md-icon class="name">
             <i class="fa fa-times interactive pop-text" ng-click="close('right')" aria-hidden="true"></i>
@@ -52,7 +52,7 @@
        <!-- content -->
        <ul style="margin: 0;">
         <li ng-repeat="pokemon in pokemons | filter: reportFilter" ng-click="reportSighting(pokemon)" class="pokemon animate-fade">
-          <div class="pop-text interactive">{{pokemon.id}} {{pokemon.name}}</div>
+          <div class="pop-text interactive"><span class="pokemon-id">{{pokemon.id}}</span> {{pokemon.name}}</div>
         </li>
        </ul>
      </md-content>

@@ -98,12 +98,12 @@ li.pokemon{
 }
 
 img.pop {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     -webkit-transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
     transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
     &:hover {
-        -webkit-transform: scale(1.1, 1.1);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        -webkit-transform: scale(1.2,1.2);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
     }
 }
 
@@ -112,12 +112,12 @@ img.pop {
 }
 
 .pop-text {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     -webkit-transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
     transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
     &:hover {
-        -webkit-transform: scale(1.1, 1.1);
-        text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        -webkit-transform: scale(1.2,1.2);
+        text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
     }
 }
 
@@ -156,8 +156,34 @@ img.pop {
   border-color: black;
 }
 
-li.pokemon.active {
-  color: #FF754A;
+li.pokemon{
+
+  .pokemon-id{
+    color: #FF754A;
+  }
+
+  padding: 0 1em;
+  &.active {
+    color: #FF754A;
+  }
+}
+
+.md-warn .md-input-focused{
+ .md-input, .fa-times{
+   color: #333 !important;
+   border-color: #333 !important;
+  }
+}
+
+.md-dark .fa-times{
+  color: #bbb;
+}
+
+.md-dark .md-input-focused{
+ .md-input, .fa-times{
+   color: #eee !important;
+   border-color: #eee !important;
+  }
 }
 
 .animate-fade.ng-move,
