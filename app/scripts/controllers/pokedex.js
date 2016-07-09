@@ -25,7 +25,7 @@ angular.module('pgaApp')
 
   $scope.reportSighting = function(pokemon){
     swal({
-      title: 'Was there a ' + pokemon.name + " around this area?",
+      title: 'Is there a ' + pokemon.name + " near you?",
       text: "You must allow locations.",
       type: 'info',
       showCancelButton: true,
