@@ -36,8 +36,8 @@ angular.module('pgaApp')
         );
 
         $scope.close();
-      })
-    })
-  }
+      });
+    });
+  };
 
 });

@@ -59,12 +59,12 @@ angular
         "entry.1679630058": pokemon.name,
         "entry.52226537": pokemon.id,
         "entry.1840957835": position.coords.latitude+","+position.coords.longitude
-      }
+      };
 
       var urlParams = "";
 
       angular.forEach(params, function(value, key) {
-        urlParams += "&"+key+"="+value
+        urlParams += "&"+key+"="+value;
       });
 
       console.log(url+urlParams);
@@ -73,10 +73,10 @@ angular
         console.log(response);
       },function(error) {
         console.log(error);
-      })
+      });
     });
 
-  }
+  };
 
 }).filter('parseInt', function() {
   return function(input) {
