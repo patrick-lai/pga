@@ -1,1 +1,3 @@
+https://github.com/heroku/heroku-buildpack-ruby.git
+https://github.com/label305-forks/heroku-buildpack-nodejs.git
 https://github.com/nknj/heroku-buildpack-yo-angular
