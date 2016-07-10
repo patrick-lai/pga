@@ -23,6 +23,11 @@
        </md-input-container>
 
        <ul style="margin: 0;">
+         <li class="pokemon">
+           <div flex class="pop-text">
+             <span class="pokemon-id interactive" ng-click="setPokemon(null)">Show All</span>
+           </div>
+         </li>
         <li layout="row" ng-repeat="pokemon in pokemons | filter: findFilter" class="pokemon animate-fade" ng-class=" {'active' : currentPokemon == pokemon }">
             <div flex class="pop-text">
               <span class="pokemon-id interactive" ng-click="setPokemon(pokemon)">{{pokemon.id}}</span>
