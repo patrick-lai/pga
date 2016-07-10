@@ -28,8 +28,9 @@ function sync() {
         if (values.length > 1) {
             var csvBlob = Utilities.newBlob(convertToCsv_(values), 'application/octet-stream');
             FusionTables.Table.importRows(TABLE_ID, csvBlob, { isStrict: REQUIRE_SAME_COLUMNS, startLine: FIRST_DATA_ROW - 1 });
-            Browser.msgBox('Imported ' + values.length + ' rows in your Fusion Table', Browser.Buttons.OK);
+            Browser.msgBox('Imported ' + (values.length - 1) + ' rows in your Fusion Table', Browser.Buttons.OK);
             wholeSheet.clear();
+            sheet.appendRow(["TimeStamp", "PokemonName", "PokedexId","Location"]);
         }
     } else {
         Logger.log('Skipping row replacement because of ' + tasks.totalItems + ' active background task(s)');

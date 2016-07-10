@@ -1,9 +1,6 @@
 <div class="full-height">
-  <!-- <ng-map id="pokemonMap" zoom="5" center="current-location" class="full-height">
-    <marker animation="DROP" position="current-location"></marker>
-    <fusion-tables-layer query="{{getQuery()}}"
-      heatmap = "{enabled: false}">
-    </fusion-tables-layer>
-  </ng-map> -->
-  <iframe class="full-height" style="width: 100%;" scrolling="no" frameborder="no" ng-src="{{getIframeUrl()}}"></iframe>
+  <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+    <ui-gmap-layer type="FusionTablesLayer" options="map.fusionlayer.options" show="true"></ui-gmap-layer>
+  </ui-gmap-google-map>
+  <!-- <iframe class="full-height" style="width: 100%;" scrolling="no" frameborder="no" ng-src="{{getIframeUrl()}}"></iframe> -->
 </div>

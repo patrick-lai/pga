@@ -38,7 +38,7 @@
             </div>
         </li>
         <li class="pokemon">
-          <div class="interactive pop-text" ng-click="openLegal()">(<i class="fa fa-gavel" aria-hidden="true"> Legal</i>)</div>
+          <div class="interactive pop-text" ng-click="openLegal()">(<i class="fa fa-gavel" aria-hidden="true"> L  egal</i>)</div>
         </li>
        </ul>
      </md-content>
@@ -53,7 +53,7 @@
       <span ng-show="currentPokemon">{{currentPokemon.name}} Sightings</span>
     </md-button>
 
-    <div class="full-height" ng-include="mapsUrl" ng-></div>
+    <div class="full-height" ng-include="'views/map.html'" ng-></div>
 
     <div class="bottomBar">
         <a class="pop-text" href="mailto:Patrick_lai@hellokitty.com?Subject=Reports" target="_top">

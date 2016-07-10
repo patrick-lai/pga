@@ -24,10 +24,15 @@ angular.module('pgaApp')
   };
 
   $scope.reportSighting = function(pokemon){
+
+    if(!$rootScope.currentLocation){
+      swal("You Must Enable Locations to Report a Sighting");
+      return
+    }
+
     swal({
-      title: 'Is there a ' + pokemon.name + " near you?",
-      text: "You must allow locations.",
-      type: 'info',
+      title: pokemon.name + " sighted near you now?",
+      type: 'info' ,
       showCancelButton: true,
       confirmButtonColor: '#FF754A',
       cancelButtonColor: '#bbb',
