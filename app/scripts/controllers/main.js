@@ -39,7 +39,8 @@ angular.module('pgaApp')
   $scope.toggleRight = buildDelayedToggler('right');
   $scope.pokemons = [];
   $scope.myPosition = $geolocation.position;
-
+  $scope.reportFormUrl = "https://docs.google.com/a/originoffice.com/forms/d/e/1FAIpQLSdwkzgXy1cta5zRzWBS4BL8DQKZhrxe8qdwqDQtabbxziUtPA/viewform";
+  
   $http.get('pokemon.json').success(function(data) {
     $scope.pokemons = data;
   });

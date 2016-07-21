@@ -64,9 +64,9 @@ angular
     var url = "https://docs.google.com/forms/d/"+this.formId+"/formResponse?submit=Submit";
 
     var params = {
-      "entry.1679630058": pokemon.name,
-      "entry.52226537": pokemon.id,
-      "entry.1840957835": $rootScope.currentLocation.latitude+","+$rootScope.currentLocation.longitude
+      // "entry.1679630058": pokemon.name,
+      "entry.52226537": pokemon.id + " " + pokemon.name,
+      "entry.1840957835": $rootScope.currentLocation.latitude+" "+$rootScope.currentLocation.longitude
     };
 
     angular.forEach(params, function(value, key) {
