@@ -74,7 +74,6 @@ function convertToCsv_(data) {
         };
         // Join each row's columns and add a carriage return to end of each row except the last
         if (row < data.length && data[row][LOCATION_COLUMN]) {
-            Browser.msgBox(data[row]);
             csv += data[row].join(',') + '\r\n';
         };
     };
@@ -95,6 +94,9 @@ function geocode(address) {
   if (!address) {
     return '';
   }
+
+  Utilities.sleep(100);
+
   var results = Maps.newGeocoder().geocode(address);
 
   // If all your form responses will be within a given area, you may get better
