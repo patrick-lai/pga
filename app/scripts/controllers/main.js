@@ -125,7 +125,7 @@ angular.module('pgaApp')
           'You may filter down by the left menu<br/><br/>' +
           'To report a sigting click the eye icon(<i class="fa fa-eye pop-text interactive" aria-hidden="true"></i>) next to the pokemon you want to report. It will use your current location. <br/><br/>'+
           'You can report a custom location using the "Report Form" <br/><br/>'+
-          'We intermittently audit the locations. We Wish this tool will help our fellow trainers :).<br/><br/>',
+          'We intermittently audit the locations. We Wish this tool will help fellow trainers :).<br/><br/>',
         confirmButtonText:
           'close'
       });
