@@ -29,7 +29,7 @@ angular
       libraries: 'weather,geometry,visualization'
   });
 
-  $locationProvider.html5Mode(true);
+  // $locationProvider.html5Mode(true);
   $urlRouterProvider.otherwise('/');
   $mdThemingProvider.theme('default')
   .primaryPalette('grey')
@@ -45,6 +45,11 @@ angular
     name: 'Test',
     url: '/test',
     tempalteUrl: 'views/test.html'
+  })
+  .state({
+    name: 'Importer',
+    url: '/import',
+    templateUrl: 'views/import.html'
   });
 
 })
@@ -52,6 +57,7 @@ angular
 .service('pgaTable', function($http, $geolocation, $rootScope) {
 
   this.formId = "1JdBMtPa4V-5FZNeDMPw9gC63cU_PYfMY0yvLtFpKZIo";
+  this.apiKey = "AIzaSyBbw9PJvWsQn_qmBIMSxFAMrtSJcqM70Sg";
 
   this.reportSighting = function (pokemon) {
 
