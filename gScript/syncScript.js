@@ -73,7 +73,7 @@ function convertToCsv_(data) {
             }
         };
         // Join each row's columns and add a carriage return to end of each row except the last
-        if (row < data.length && data[row][POKEDEX_COLUMN]) {
+        if (row < data.length && data[row][LOCATION_COLUMN]) {
             Browser.msgBox(data[row]);
             csv += data[row].join(',') + '\r\n';
         };
