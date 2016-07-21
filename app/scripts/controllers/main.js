@@ -40,7 +40,7 @@ angular.module('pgaApp')
   $scope.pokemons = [];
   $scope.myPosition = $geolocation.position;
   $scope.reportFormUrl = "https://docs.google.com/a/originoffice.com/forms/d/e/1FAIpQLSdwkzgXy1cta5zRzWBS4BL8DQKZhrxe8qdwqDQtabbxziUtPA/viewform";
-  
+
   $http.get('pokemon.json').success(function(data) {
     $scope.pokemons = data;
   });
@@ -51,7 +51,7 @@ angular.module('pgaApp')
     }
 
     return "PokedexId = "+$rootScope.currentPokemon.id;
-  }
+  };
 
   $scope.openLegal = function(){
     swal(
@@ -72,13 +72,13 @@ angular.module('pgaApp')
   $geolocation.watchPosition({
     timeout: 5000,
     maximumAge: 250
-  })
+  });
 
   // Default Sydney Location when fails
   var sydenyLocation = {
     latitude: -33.8688,
     longitude: 151.2093
-  }
+  };
 
   var zoom = 16;
 
@@ -98,7 +98,7 @@ angular.module('pgaApp')
           where: $scope.getQuery()
         }
       }
-    }
+    };
 
     // Update on Pokemon Select
     $rootScope.$watch('currentPokemon', function(pokemon){
@@ -106,15 +106,15 @@ angular.module('pgaApp')
     });
 
     $scope.$on('$geolocation.position.changed', function(event, newPosition){
-        if(!($scope.map.center == sydenyLocation && newPosition)){
-          return
+        if(!($scope.map.center === sydenyLocation && newPosition)){
+          return;
         }
         $rootScope.currentLocation = newPosition.coords;
         $scope.map.center = {
             latitude: newPosition.coords.latitude,
             longitude: newPosition.coords.longitude
         };
-    })
+    });
 
     $scope.showHelp = function(){
       swal({
@@ -128,7 +128,7 @@ angular.module('pgaApp')
           'We intermittently audit the locations. We Wish this tool will help our fellow trainers :).<br/><br/>',
         confirmButtonText:
           'close'
-      })
-    }
+      });
+    };
 
 });

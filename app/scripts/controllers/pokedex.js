@@ -27,7 +27,7 @@ angular.module('pgaApp')
 
     if(!$rootScope.currentLocation){
       swal("You Must Enable Locations to Report a Sighting");
-      return
+      return;
     }
 
     swal({

@@ -1,3 +1,4 @@
+'use strict';
 
 angular.module('pgaApp')
 .controller('ImportCtrl', function ($scope, $rootScope, $http, lodash, pgaTable) {
@@ -7,35 +8,40 @@ angular.module('pgaApp')
 
   $scope.jsonInput = JSON.stringify(sampleInput, null, 4);
 
+
+  function appendLineToCSV(value,location){
+    $http.get(baseGeoCodeUrl+location+keyComponent).then(function(response){
+      if(response.data.results.length > 0){
+        var location = response.data.results[0].geometry.location;
+        console.log(location);
+        $scope.parsedCSV += [Date(),value.Name,value.ID+" "+value.Name,location.lat+" "+location.lng].join(',') + "\n";
+      }
+    });
+  }
+
   $scope.parsePokemon = function(){
     $scope.parsedCSV = "TimeStamp,pokemonName,pokemonID,Location\n";
 
     try{
       var parsedJson = JSON.parse($scope.jsonInput);
+
+      lodash.forEach(parsedJson, function(value,key){
+        if(value.Location !== undefined && value.Location !== null){
+          var locations = value.Location.split(',');
+          for(var i in locations){
+            appendLineToCSV(value,locations[i]);
+          }
+        }
+      });
+
     }catch(err){
       swal(err);
       return;
     }
-
-    lodash.forEach(parsedJson, function(value,key){
-      if(value.Location != undefined && value.Location != null){
-        var locations = value.Location.split(',');
-        for(var i in locations){
-          $http.get(baseGeoCodeUrl+locations[i]+keyComponent).then(function(response){
-            if(response.data.results.length > 0){
-              var location = response.data.results[0].geometry.location;
-              console.log(location);
-              $scope.parsedCSV += [Date(),value.Name,value.ID+" "+value.Name,location.lat+" "+location.lng].join(',') + "\n";
-            }
-          })
-        }
-      }
-    });
-
-  }
+  };
 
   $scope.parseInput = function(){
     $scope.parsePokemon();
-  }
+  };
 
 });
