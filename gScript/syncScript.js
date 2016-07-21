@@ -8,11 +8,17 @@
 // replace with your fusion table's id (from File > About this table)
 var TABLE_ID = '1b4XoPuboTQ-x6K_uoIpjEg0k4Nwa8gEewhFpDypw';
 
+// Location column
+var docProperties = PropertiesService.getScriptProperties();
+var LOCATION_COLUMN = docProperties.getProperty('Location');
+var POKEDEX_COLUMN = docProperties.getProperty('PokedexId');
+var NAME_COLUMN = docProperties.getProperty('PokemonName');
+
 // first row that has data, as opposed to header information
 var FIRST_DATA_ROW = 2;
 
 // true means the spreadsheet and table must have the same column count
-var REQUIRE_SAME_COLUMNS = true;
+var REQUIRE_SAME_COLUMNS = false;
 
 /**
  * replaces all rows in the fusion table identified by TABLE_ID with the
@@ -55,12 +61,21 @@ function convertToCsv_(data) {
                     value = '"' + value.replace(/"/g, '""') + '"';
                     data[row][col] = value;
             }
+            // GeoCode locations
+            if(col == LOCATION_COLUMN){
+              data[row][col] = geocode(data[row][col].toString());
+            }
+            // Get Name
+            if(col == POKEDEX_COLUMN){
+              var attributes = data[row][col].split(" ");
+              data[row][POKEDEX_COLUMN] = attributes[0];
+              data[row][NAME_COLUMN] = attributes[1];
+            }
         };
         // Join each row's columns and add a carriage return to end of each row except the last
-        if (row < data.length - 1) {
+        if (row < data.length && data[row][POKEDEX_COLUMN]) {
+            Browser.msgBox(data[row]);
             csv += data[row].join(',') + '\r\n';
-        } else {
-            csv += data[row];
         };
     };
     return csv;
@@ -75,3 +90,32 @@ function onOpen() {
     }];
     ss.addMenu("Sync Spreadsheet To Fusion Table", menuEntries);
 };
+
+function geocode(address) {
+  if (!address) {
+    return '';
+  }
+  var results = Maps.newGeocoder().geocode(address);
+
+  // If all your form responses will be within a given area, you may get better
+  // geocoding results by biasing to that area. Uncomment the code below and set
+  // the desired region, bounding box, or component filter. The example shows
+  // how to indicate that the addresses should be in Spain. For full details, see
+  // https://developers.google.com/maps/documentation/javascript/geocoding#GeocodingRequests
+  //
+  // var results = Maps.newGeocoder().geocode({ address: address, region: 'es' });
+
+  Logger.log('Geocoding: ' + address);
+  if (results.status == 'OK') {
+    var bestResult = results.results[0];
+    var lat = bestResult.geometry.location.lat;
+    var lng = bestResult.geometry.location.lng;
+    var latLng = lat + ' ' + lng;
+    Logger.log('Results: ' + latLng);
+    return latLng;
+  } else {
+    Logger.log('Error geocoding: ' + address);
+    Logger.log(results.status);
+    return '';
+  }
+}

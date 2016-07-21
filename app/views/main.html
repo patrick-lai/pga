@@ -22,7 +22,13 @@
           <input ng-model="findFilter" ng-model-options="{debounce: 80}">
        </md-input-container>
 
+
        <ul style="margin: 0;">
+         <li class="pokemon pop-text">
+           <div flex ng-click="showHelp()">
+             <i class="fa fa-question-circle interactive" aria-hidden="true"> <span>How to Use?</span>  </i>
+           </div>
+         </li>
          <li class="pokemon">
            <div flex class="pop-text">
              <span class="pokemon-id interactive" ng-click="setPokemon(null)">Show All</span>
