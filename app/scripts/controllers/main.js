@@ -80,7 +80,7 @@ angular.module('pgaApp')
     longitude: 151.2093
   };
 
-  var zoom = 16;
+  var zoom = 12;
 
   $scope.map = {
     center: sydenyLocation,
