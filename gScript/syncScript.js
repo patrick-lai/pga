@@ -62,8 +62,12 @@ function convertToCsv_(data) {
                     data[row][col] = value;
             }
             // GeoCode locations
-            if(col == LOCATION_COLUMN){
-              data[row][col] = geocode(data[row][col].toString());
+            if(col == LOCATION_COLUMN && data[row][col].indexOf("Location") == -1){
+              var latlong = data[row][col].toString();
+              // Only geocode if its not a latlong
+              if(latlong.match( /-?\d+\.\d+/g ) == null){
+                data[row][col] = geocode(latlong);
+              }
             }
             // Get Name
             if(col == POKEDEX_COLUMN){
@@ -97,7 +101,7 @@ function geocode(address) {
 
   Utilities.sleep(100);
 
-  var results = Maps.newGeocoder().geocode(address);
+  // var results = Maps.newGeocoder().geocode(address);
 
   // If all your form responses will be within a given area, you may get better
   // geocoding results by biasing to that area. Uncomment the code below and set
@@ -105,7 +109,7 @@ function geocode(address) {
   // how to indicate that the addresses should be in Spain. For full details, see
   // https://developers.google.com/maps/documentation/javascript/geocoding#GeocodingRequests
   //
-  // var results = Maps.newGeocoder().geocode({ address: address, region: 'es' });
+  var results = Maps.newGeocoder().geocode({ address: address, region: 'au' });
 
   Logger.log('Geocoding: ' + address);
   if (results.status == 'OK') {
