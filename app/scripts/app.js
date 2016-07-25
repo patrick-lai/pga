@@ -23,8 +23,9 @@ angular
   'LocalStorageModule',
   'ngAudio',
   'angular-momentjs',
-  'angular-vibrator',
-  'timer'
+  // 'angular-vibrator',
+  'timer',
+  'cgNotify'
 ])
 .config(function ($locationProvider, $stateProvider, $httpProvider, $urlRouterProvider, $mdThemingProvider, $momentProvider, uiGmapGoogleMapApiProvider, localStorageServiceProvider) {
 
@@ -65,7 +66,7 @@ angular
   });
 
 })
-.run(function($http, $rootScope, lodash, localStorageService, ngAudio, vibrator){
+.run(function($http, $rootScope, lodash, localStorageService, ngAudio, notify){
   $rootScope.notificationMp3 = ngAudio.load('audio/notification.mp3');
   $rootScope.pokemons = [];
   $rootScope.watchedPokemons = [];
@@ -143,7 +144,12 @@ angular
             if(!lodash.includes($rootScope.notified, p.id)){
               $rootScope.notified.push(p.id);
               $rootScope.notificationMp3.play();
-              vibrator.vibrate(1000);
+              notify({
+                message: p.name+' sighted!',
+                duration: 3000,
+                position : 'right'
+              });
+              // vibrator.vibrate(1000);
             }
 
             return include;

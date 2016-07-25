@@ -21,7 +21,7 @@
        <md-input-container style="margin: 1em; margin-bottom: 0;">
           <label>Search</label>
           <md-icon class="name">
-            <i class="fa fa-times interactive pop-text" ng-click="close('left')" aria-hidden="true"></i>
+            <i class="fa fa-times interactive pop-text" ng-click="findFilter = ''" aria-hidden="true"></i>
           </md-icon>
           <input ng-model="findFilter" ng-model-options="{debounce: 80}">
        </md-input-container>
@@ -68,7 +68,7 @@
 <div style="height: 100vh;">
 
     <md-button ng-click="toggleLeft()" class="md-raised md-primary" style="height: 50px; font-weight: bold; left: 0; position: fixed; z-index: 10; color: white;">
-      <span>Pokemon List</span>
+      <span>Menu</span>
     </md-button>
 
     <div class="full-height" ng-include="'views/map.html'" ng-></div>
