@@ -9,7 +9,7 @@
 */
 
 angular.module('pgaApp')
-.controller('MainCtrl' , function ($scope, $timeout, $mdSidenav, $rootScope, $http, lodash, pgaTable, $sce, $geolocation) {
+.controller('MainCtrl' , function ($scope, $timeout, $mdSidenav, $rootScope, $http, lodash, pgaTable, $sce, $geolocation, pvApi, $moment) {
 
   function buildDelayedToggler(navID) {
     return debounce(function() {
@@ -35,23 +35,16 @@ angular.module('pgaApp')
     };
   }
 
+  $scope.appSettings = $rootScope.appSettings;
   $scope.toggleLeft = buildDelayedToggler('left');
   $scope.toggleRight = buildDelayedToggler('right');
-  $scope.pokemons = [];
   $scope.myPosition = $geolocation.position;
   $scope.reportFormUrl = "https://docs.google.com/a/originoffice.com/forms/d/e/1FAIpQLSdwkzgXy1cta5zRzWBS4BL8DQKZhrxe8qdwqDQtabbxziUtPA/viewform";
 
   $http.get('pokemon.json').success(function(data) {
-    $scope.pokemons = data;
+    // Fetch pokemon List
+    $rootScope.pokemons = data;
   });
-
-  $scope.getQuery = function(){
-    if(!$rootScope.currentPokemon){
-      return "";
-    }
-
-    return "PokedexId = "+$rootScope.currentPokemon.id;
-  };
 
   $scope.openLegal = function(){
     swal(
@@ -64,49 +57,73 @@ angular.module('pgaApp')
     );
   };
 
+  $scope.updateDistance = function(distance){
+    $rootScope.updateMap();
+  }
+
   $scope.close = function (side) {
     $mdSidenav(side).close();
   };
 
-  // Watch users Location
+  // Watch users Location every 60 seconds
   $geolocation.watchPosition({
-    timeout: 5000,
+    timeout: 60000,
     maximumAge: 250
   });
 
   // Default Sydney Location when fails
-  var sydenyLocation = {
+  var sydneyLocation = {
     latitude: -33.8688,
     longitude: 151.2093
   };
 
-  var zoom = 12;
+  var zoom = 16;
 
   $scope.map = {
-    center: sydenyLocation,
+    center: sydneyLocation,
     zoom: zoom
   };
 
-  $scope.map.fusionlayer = {
-      options: {
-        heatmap: {
-          enabled: false
-        },
-        query: {
-          select: "Location",
-          from: "1b4XoPuboTQ-x6K_uoIpjEg0k4Nwa8gEewhFpDypw",
-          where: $scope.getQuery()
-        }
+    function updateData(){
+
+      if(!$rootScope.currentLocation){
+        return
       }
-    };
 
-    // Update on Pokemon Select
-    $rootScope.$watch('currentPokemon', function(pokemon){
-      $scope.map.fusionlayer.options.query.where = $scope.getQuery();
-    });
+      function deepComare(a,b){
+        return a.id == b.id
+      }
 
+      // fetch data from api
+      pvApi.fetchApiData($rootScope.currentLocation).then(function(response){
+        // Mark the map with pokemon
+        if(response.data.length){
+          // Work out difference
+          var newData = response.data;
+          var add = lodash.differenceWith(newData, $rootScope.surroundingPokemon, deepComare);
+          var remove = lodash.differenceWith($rootScope.surroundingPokemon, newData, deepComare);
+          var difference = lodash.union(add,remove);
+
+          $rootScope.surroundingPokemon = lodash.unionWith($rootScope.surroundingPokemon,add, deepComare);
+
+          lodash.remove($rootScope.surroundingPokemon,function(p){
+            return lodash.includes(remove,p.id);
+          });
+
+        }
+      })
+    }
+
+    $scope.makeCoords = function(lat,lng){
+      return {
+        latitude: lat,
+        longitude: lng
+      }
+    }
+
+    // Follow you around the map
     $scope.$on('$geolocation.position.changed', function(event, newPosition){
-        if(!($scope.map.center === sydenyLocation && newPosition)){
+        if(!($scope.map.center === sydneyLocation && newPosition)){
           return;
         }
         $rootScope.currentLocation = newPosition.coords;
@@ -114,18 +131,30 @@ angular.module('pgaApp')
             latitude: newPosition.coords.latitude,
             longitude: newPosition.coords.longitude
         };
+        // Update the map
+        updateData();
     });
+
+    $scope.watchAll = function(){
+      for(var p in $rootScope.pokemons){
+        $rootScope.watchPokemon($rootScope.pokemons[p]);
+      }
+      $rootScope.updateMap();
+    }
+
+    $scope.watchNone = function(){
+      $rootScope.clearLocalStorage();
+      $rootScope.updateMap();
+    }
 
     $scope.showHelp = function(){
       swal({
         title: '<h5>How to use</h5>',
         type: 'info',
         html:
-          'The map shows pokemon locations reported by users<br/><br/>' +
+          'The map will watch for selected pokemon around you<br/><br/>' +
           'You may filter down by the left menu<br/><br/>' +
-          'To report a sigting click the eye icon(<i class="fa fa-eye pop-text interactive" aria-hidden="true"></i>) next to the pokemon you want to report. It will use your current location. <br/><br/>'+
-          'You can report a custom location using the "Report Form" <br/><br/>'+
-          'We intermittently audit the locations. We Wish this tool will help fellow trainers :).<br/><br/>',
+          'We Wish this tool will help fellow trainers :).<br/>',
         confirmButtonText:
           'close'
       });

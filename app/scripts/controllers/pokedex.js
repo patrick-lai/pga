@@ -18,38 +18,13 @@ angular.module('pgaApp')
       });
   };
 
-  $scope.setPokemon = function(pokemon){
-    $rootScope.currentPokemon = pokemon;
-    $scope.close();
-  };
-
-  $scope.reportSighting = function(pokemon){
-
-    if(!$rootScope.currentLocation){
-      swal("You Must Enable Locations to Report a Sighting");
-      return;
+  $scope.togglePokemonWatch = function(pokemon){
+    if($rootScope.isWatchingPokemon(pokemon)){
+      $rootScope.unWatchPokemon(pokemon);
+    }else{
+      $rootScope.watchPokemon(pokemon);
     }
-
-    swal({
-      title: pokemon.name + " sighted near you now?",
-      type: 'info' ,
-      showCancelButton: true,
-      confirmButtonColor: '#FF754A',
-      cancelButtonColor: '#bbb',
-      confirmButtonText: 'Yes'
-    }).then(function() {
-
-      pgaTable.reportSighting(pokemon).then(function(response){
-        swal(
-          'Marked!!',
-          'Your Sighting has been marked',
-          'success'
-        );
-
-        $scope.close();
-      });
-
-    });
-  };
+    $rootScope.$broadcast('surroundingPokemonChanged');
+  }
 
 });

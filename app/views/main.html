@@ -29,22 +29,26 @@
              <i class="fa fa-question-circle interactive" aria-hidden="true"> <span>How to Use?</span>  </i>
            </div>
          </li>
-         <li class="pokemon pop-text">
-           <a flex href="{{reportFormUrl}}" target="_blank" style="color: white;">
-             <i class="fa fa-flag interactive" aria-hidden="true"> <span>Report Form</span>  </i>
-           </a>
+         <li style="padding: 1em;">
+           <md-slider-container>
+             <span>Distance: {{appSettings.distance}}m </span>
+             <md-slider flex min="1" max="1000" ng-model="appSettings.distance" ng-change="updateDistance(appSettings.distance)" aria-label="distance">
+           </md-slider>
          </li>
-         <li class="pokemon">
-           <div flex class="pop-text">
-             <span class="pokemon-id interactive" ng-click="setPokemon(null)">Show All</span>
-           </div>
+         <li layout="row" class="pokemon animate-fade">
+             <div flex class="pop-text">
+               <span class="pokemon-id interactive" ng-click="watchAll()">Show All</span>
+             </div>
+             <div flex style="max-width: 30px; text-align: right;" ng-click="watchNone()">
+               <i class="fa fa-times pop-text interactive" aria-hidden="true"></i>
+             </div>
          </li>
-        <li layout="row" ng-repeat="pokemon in pokemons | filter: findFilter" class="pokemon animate-fade" ng-class=" {'active' : currentPokemon == pokemon }">
+        <li layout="row" ng-repeat="pokemon in pokemons | filter: findFilter" class="pokemon animate-fade" ng-class=" {'active' : isWatchingPokemon(pokemon) }">
             <div flex class="pop-text">
-              <span class="pokemon-id interactive" ng-click="setPokemon(pokemon)">{{pokemon.id}}</span>
-              <span class="interactive" ng-click="setPokemon(pokemon)">{{pokemon.name}}</span>
+              <span class="pokemon-id interactive" ng-click="togglePokemonWatch(pokemon)">{{pokemon.id}}</span>
+              <span class="interactive" ng-click="togglePokemonWatch(pokemon)">{{pokemon.name}}</span>
             </div>
-            <div flex style="max-width: 50px; text-align: right;" ng-click="reportSighting(pokemon)">
+            <div flex style="max-width: 50px; text-align: right;" ng-click="togglePokemonWatch(pokemon)">
               <i class="fa fa-eye pop-text interactive" aria-hidden="true"></i>
             </div>
         </li>
@@ -60,8 +64,7 @@
 <div style="height: 100vh;">
 
     <md-button ng-click="toggleLeft()" class="md-raised md-primary" style="height: 50px; font-weight: bold; left: 0; position: fixed; z-index: 10; color: white;">
-      <span ng-hide="currentPokemon">Find Pokemon</span>
-      <span ng-show="currentPokemon">{{currentPokemon.name}} Sightings</span>
+      <span>Pokemon List</span>
     </md-button>
 
     <div class="full-height" ng-include="'views/map.html'" ng-></div>

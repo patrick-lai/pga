@@ -19,15 +19,27 @@ angular
   'ngMaterial',
   'ngLodash',
   'ngGeolocation',
-  'uiGmapgoogle-maps'
+  'uiGmapgoogle-maps',
+  'LocalStorageModule',
+  'ngAudio',
+  'angular-momentjs',
+  'angular-vibrator',
+  'timer'
 ])
-.config(function ($locationProvider, $stateProvider, $httpProvider, $urlRouterProvider, $mdThemingProvider, uiGmapGoogleMapApiProvider) {
+.config(function ($locationProvider, $stateProvider, $httpProvider, $urlRouterProvider, $mdThemingProvider, $momentProvider, uiGmapGoogleMapApiProvider, localStorageServiceProvider) {
 
   uiGmapGoogleMapApiProvider.configure({
       key: 'AIzaSyBbw9PJvWsQn_qmBIMSxFAMrtSJcqM70Sg',
       v: '3.20', //defaults to latest 3.X anyhow
       libraries: 'weather,geometry,visualization'
   });
+
+  $momentProvider
+   .asyncLoading(false)
+   .scriptUrl('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js');
+
+  localStorageServiceProvider
+   .setPrefix('pgaApp');
 
   // $locationProvider.html5Mode(true);
   $urlRouterProvider.otherwise('/');
@@ -51,6 +63,107 @@ angular
     url: '/import',
     templateUrl: 'views/import.html'
   });
+
+})
+.run(function($http, $rootScope, lodash, localStorageService, ngAudio, vibrator){
+  $rootScope.notificationMp3 = ngAudio.load('audio/notification.mp3');
+  $rootScope.pokemons = [];
+  $rootScope.watchPokemon = function(pokemon){
+    return localStorageService.set(parseInt(pokemon.id), true);
+  };
+
+  $rootScope.unWatchPokemon = function(pokemon){
+    return localStorageService.remove(parseInt(pokemon.id));
+  };
+
+  $rootScope.isWatchingPokemon = function(pokemon){
+    var val = localStorageService.get(parseInt(pokemon.id));
+    return val != undefined && val != null;
+  }
+
+  $rootScope.setDistance = function(distance){
+    $rootScope.appSettings.distance = distance;
+    localStorageService.set('distance',distance);
+  }
+
+  // Setup Distance
+  $rootScope.appSettings = {};
+  $rootScope.appSettings.distance = localStorageService.get('distance');
+
+  $rootScope.notified = [];
+
+  // set Default distance
+  if(!$rootScope.distance){
+      $rootScope.setDistance(500);
+  }
+
+  $rootScope.surroundingPokemon = [];
+  $rootScope.filteredPokemon = [];
+
+  function filterPokemon(){
+    $rootScope.filteredPokemon =
+    lodash.chain($rootScope.surroundingPokemon)
+          .filter(function(p){
+            var include = $rootScope.isWatchingPokemon({id: p.pokemonId}) && p.distance <= $rootScope.appSettings.distance;
+
+            if(!include){
+              return false;
+            }
+
+            //notify once only
+            if(!lodash.includes($rootScope.notified, p.id)){
+              $rootScope.notified.push(p.id);
+              $rootScope.notificationMp3.play();
+              vibrator.vibrate(1000);
+            }
+
+            return include;
+          }).map(function(p){
+            p.show = true;
+            return p;
+          })
+          .value();
+  }
+
+  $rootScope.clearLocalStorage = function(){
+    localStorageService.clearAll();
+  }
+
+  $rootScope.updateMap = function(){
+    $rootScope.$broadcast('surroundingPokemonChanged');
+  }
+
+  $rootScope.$watch("surroundingPokemon", function(){
+     $rootScope.updateMap();
+  });
+
+  $rootScope.$on('surroundingPokemonChanged', function(event, message) {
+    filterPokemon();
+  });
+
+  $http.get('pokemon.json').success(function(response) {
+    // Fetch pokemon List
+    $rootScope.pokemons = response.data;
+  });
+
+})
+
+.service('pvApi', function($http, $geolocation, $rootScope){
+
+  this.baseUrl = "http://localhost:8080/fetch"
+
+  this.maxDistance = 1000;
+
+  this.fetchApiData = function(coords){
+    var data = {
+      lat : $rootScope.currentLocation.latitude,
+      lng : $rootScope.currentLocation.longitude,
+      distance : this.maxDistance
+    }
+    return $http.post(this.baseUrl, data, function(response){
+      return response.data;
+    });
+  }
 
 })
 
@@ -81,7 +194,8 @@ angular
 
   };
 
-}).filter('parseInt', function() {
+})
+.filter('parseInt', function() {
   return function(input) {
     return parseInt(input);
   };

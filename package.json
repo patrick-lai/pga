@@ -36,6 +36,7 @@
   "dependencies": {
     "connect": "^3.4.1",
     "express": "~4.0.0",
-    "gzippo": "^0.2.0"
+    "gzippo": "^0.2.0",
+    "pokego-scan": "^0.1.5"
   }
 }
