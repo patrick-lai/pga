@@ -36,6 +36,7 @@ angular.module('pgaApp')
   }
 
   $scope.appSettings = $rootScope.appSettings;
+  $scope.loading = true;
   $scope.toggleLeft = buildDelayedToggler('left');
   $scope.toggleRight = buildDelayedToggler('right');
   $scope.myPosition = $geolocation.position;
@@ -58,6 +59,7 @@ angular.module('pgaApp')
   };
 
   $scope.updateDistance = function(distance){
+    $rootScope.setDistance(distance);
     $rootScope.updateMap();
   }
 
@@ -81,7 +83,22 @@ angular.module('pgaApp')
 
   $scope.map = {
     center: sydneyLocation,
-    zoom: zoom
+    zoom: zoom,
+    markers: [],
+    markersEvents: {
+        click: function(marker, eventName, model) {
+            $scope.map.window.model = model;
+            $scope.map.window.show = true;
+        }
+    },
+    window: {
+        marker: {},
+        show: false,
+        closeClick: function() {
+            this.show = false;
+        },
+        options: {}
+    }
   };
 
     function updateData(){
@@ -96,7 +113,7 @@ angular.module('pgaApp')
 
       // fetch data from api
       pvApi.fetchApiData($rootScope.currentLocation).then(function(response){
-        // Mark the map with pokemon
+        // Mark the map with pokemo
         if(response.data.length){
           // Work out difference
           var newData = response.data;
@@ -109,9 +126,12 @@ angular.module('pgaApp')
           lodash.remove($rootScope.surroundingPokemon,function(p){
             return lodash.includes(remove,p.id);
           });
-
+          $scope.loading = false;
         }
-      })
+      },function(error){
+        swal("Please wait, We will refresh the map in a minute");
+        $scope.loading = false;
+      });
     }
 
     $scope.makeCoords = function(lat,lng){
@@ -154,6 +174,7 @@ angular.module('pgaApp')
         html:
           'The map will watch for selected pokemon around you<br/><br/>' +
           'You may filter down by the left menu<br/><br/>' +
+          'Tap the pokemon on the map to see countdown timer<br/><br/>' +
           'We Wish this tool will help fellow trainers :).<br/>',
         confirmButtonText:
           'close'

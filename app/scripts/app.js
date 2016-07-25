@@ -93,8 +93,8 @@ angular
   $rootScope.notified = [];
 
   // set Default distance
-  if(!$rootScope.distance){
-      $rootScope.setDistance(500);
+  if(!$rootScope.appSettings.distance){
+      $rootScope.setDistance(1000);
   }
 
   $rootScope.surroundingPokemon = [];
@@ -118,11 +118,7 @@ angular
             }
 
             return include;
-          }).map(function(p){
-            p.show = true;
-            return p;
-          })
-          .value();
+          }).value();
   }
 
   $rootScope.clearLocalStorage = function(){
@@ -162,6 +158,9 @@ angular
     }
     return $http.post(this.baseUrl, data, function(response){
       return response.data;
+    },function(error){
+      console.log("server is busy");
+      return error;
     });
   }
 

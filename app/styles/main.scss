@@ -160,6 +160,22 @@ img.pop {
   border-color: black;
 }
 
+md-slider.md-default-theme .md-track.md-track-fill, md-slider .md-track.md-track-fill {
+    background-color: #FF754A !important;
+    border-color: #FF754A !important;
+}
+md-slider .md-thumb{
+    background-color: #FF754A !important;
+}
+md-slider.md-default-theme .md-thumb:after, md-slider .md-thumb:after{
+  background-color: #333 !important;
+  border-color: #222 !important;
+}
+
+md-slider.md-default-theme .md-focus-ring, md-slider .md-focus-ring{
+  background-color: #777 !important;
+}
+
 li.pokemon{
 
   .pokemon-id{
@@ -235,4 +251,13 @@ li.pokemon{
 .angular-google-map-container {
   width: 100%;
   height: 100%;
+}
+
+.pikachuLoading{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  z-index: 10;
 }

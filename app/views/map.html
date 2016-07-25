@@ -5,13 +5,9 @@
             idKey="'id'"
             coords="'self'"
             icon="'image'"
-            options="markerOptions"
+            events="map.markersEvents"
             >
-            <ui-gmap-windows show="show">
-                <div>
-                  <timer end-time="expiration_time * 1000">{{minutes}}m:{{seconds}}s</timer>
-                </div>
-            </ui-gmap-windows>
     </ui-gmap-markers>
+    <ui-gmap-window show="map.window.show" coords="map.window.model" options="map.window.options" closeClick="map.window.closeClick()" templateUrl="'views/infowindow.tpl.html'" templateParameter="map.window"></ui-gmap-window>
   </ui-gmap-google-map>
 </div>
