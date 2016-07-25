@@ -18,7 +18,12 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  var allowedOrigins = ['http://127.0.0.1:5000', 'http://localhost:5000', 'https://whereispokemon.com','https://www.whereispokemon.com','https://whereispokemon.herokuapp.com/', 'http://localhost:9000'];
+  var origin = req.headers.origin;
+  if(allowedOrigins.indexOf(origin) > -1){
+       res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
@@ -52,7 +57,3 @@ app.get('/', function(req, res){
 });
 
 app.listen(process.env.PORT || 5000);
-
-http.listen(5000, function(){
-  console.log('listening on *:5000');
-});
