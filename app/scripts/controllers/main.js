@@ -9,7 +9,7 @@
 */
 
 angular.module('pgaApp')
-.controller('MainCtrl' , function ($scope, $timeout, $mdSidenav, $rootScope, $http, lodash, pgaTable, $sce, $geolocation, pvApi, $moment) {
+.controller('MainCtrl' , function ($scope, $timeout, $interval, $mdSidenav, $rootScope, $http, lodash, pgaTable, $sce, $geolocation, pvApi, $moment) {
 
   function buildDelayedToggler(navID) {
     return debounce(function() {
@@ -45,6 +45,10 @@ angular.module('pgaApp')
   $http.get('pokemon.json').success(function(data) {
     // Fetch pokemon List
     $rootScope.pokemons = data;
+    if($rootScope.watchedPokemons == null){
+      $rootScope.watchedPokemons = [];
+      $rootScope.watchAll();
+    }
   });
 
   $scope.openLegal = function(){
@@ -67,10 +71,23 @@ angular.module('pgaApp')
     $mdSidenav(side).close();
   };
 
-  // Watch users Location every 60 seconds
+
+  $geolocation.getCurrentPosition({
+    timeout: 60000
+  }).then(function(position) {
+    if($scope.myPosition.error){
+      swal("Please allow locations for this app to work");
+    }
+    $rootScope.currentLocation = position.coords;
+    updateData();
+  });
+
+
+  // Watch users Location
   $geolocation.watchPosition({
-    timeout: 60000,
-    maximumAge: 250
+    timeout: 30000,
+    maximumAge: 250,
+    enableHighAccuracy: true
   });
 
   // Default Sydney Location when fails
@@ -86,99 +103,89 @@ angular.module('pgaApp')
     zoom: zoom,
     markers: [],
     markersEvents: {
-        click: function(marker, eventName, model) {
-            $scope.map.window.model = model;
-            $scope.map.window.show = true;
-        }
+      click: function(marker, eventName, model) {
+        $scope.map.window.model = model;
+        $scope.map.window.show = true;
+      }
     },
     window: {
-        marker: {},
-        show: false,
-        closeClick: function() {
-            this.show = false;
-        },
-        options: {}
+      marker: {},
+      show: false,
+      closeClick: function() {
+        this.show = false;
+      },
+      options: {}
     }
   };
 
-    function updateData(){
+  function updateData(){
 
-      if(!$rootScope.currentLocation){
-        return
-      }
+    if(!$rootScope.currentLocation){
+      return
+    }
 
-      function deepComare(a,b){
-        return a.id == b.id
-      }
+    function deepComare(a,b){
+      return a.id == b.id
+    }
 
-      // fetch data from api
-      pvApi.fetchApiData($rootScope.currentLocation).then(function(response){
-        // Mark the map with pokemo
-        if(response.data.length){
-          // Work out difference
-          var newData = response.data;
-          var add = lodash.differenceWith(newData, $rootScope.surroundingPokemon, deepComare);
-          var remove = lodash.differenceWith($rootScope.surroundingPokemon, newData, deepComare);
-          var difference = lodash.union(add,remove);
+    // fetch data from api
+    pvApi.fetchApiData($rootScope.currentLocation).then(function(response){
+      // Mark the map with pokemo
+      if(response.data.length){
+        // Work out difference
+        var newData = response.data;
+        var add = lodash.differenceWith(newData, $rootScope.surroundingPokemon, deepComare);
+        var remove = lodash.differenceWith($rootScope.surroundingPokemon, newData, deepComare);
+        var difference = lodash.union(add,remove);
 
-          $rootScope.surroundingPokemon = lodash.unionWith($rootScope.surroundingPokemon,add, deepComare);
+        $rootScope.surroundingPokemon = lodash.unionWith($rootScope.surroundingPokemon,add, deepComare);
 
-          lodash.remove($rootScope.surroundingPokemon,function(p){
-            return lodash.includes(remove,p.id);
-          });
-          $scope.loading = false;
-        }
-      },function(error){
-        swal("Please wait, We will refresh the map in a minute");
+        lodash.remove($rootScope.surroundingPokemon,function(p){
+          return lodash.includes(remove,p.id);
+        });
         $scope.loading = false;
-      });
-    }
-
-    $scope.makeCoords = function(lat,lng){
-      return {
-        latitude: lat,
-        longitude: lng
       }
-    }
-
-    // Follow you around the map
-    $scope.$on('$geolocation.position.changed', function(event, newPosition){
-        if(!($scope.map.center === sydneyLocation && newPosition)){
-          return;
-        }
-        $rootScope.currentLocation = newPosition.coords;
-        $scope.map.center = {
-            latitude: newPosition.coords.latitude,
-            longitude: newPosition.coords.longitude
-        };
-        // Update the map
-        updateData();
+    },function(error){
+      swal("Please wait, We will refresh the map in a minute");
+      $scope.loading = false;
     });
+  }
 
-    $scope.watchAll = function(){
-      for(var p in $rootScope.pokemons){
-        $rootScope.watchPokemon($rootScope.pokemons[p]);
-      }
-      $rootScope.updateMap();
+  $scope.makeCoords = function(lat,lng){
+    return {
+      latitude: lat,
+      longitude: lng
     }
+  }
 
-    $scope.watchNone = function(){
-      $rootScope.clearLocalStorage();
-      $rootScope.updateMap();
+  // Follow you around the map
+  $scope.$on('$geolocation.position.changed', function(event, newPosition){
+    if(!newPosition){
+      return;
     }
-
-    $scope.showHelp = function(){
-      swal({
-        title: '<h5>How to use</h5>',
-        type: 'info',
-        html:
-          'The map will watch for selected pokemon around you<br/><br/>' +
-          'You may filter down by the left menu<br/><br/>' +
-          'Tap the pokemon on the map to see countdown timer<br/><br/>' +
-          'We Wish this tool will help fellow trainers :).<br/>',
-        confirmButtonText:
-          'close'
-      });
+    $rootScope.currentLocation = newPosition.coords;
+    $scope.map.center = {
+      latitude: newPosition.coords.latitude,
+      longitude: newPosition.coords.longitude
     };
+    // Update on first time
+  });
+
+  //Interval update Data
+  $interval(updateData, 45000);
+
+  $scope.showHelp = function(){
+    swal({
+      title: '<h5>How to use</h5>',
+      type: 'info',
+      html:
+      'The map will watch for selected pokemon around you<br/><br/>' +
+      'You may filter down by the left menu<br/><br/>' +
+      'Tap the pokemon on the map to see countdown timer<br/><br/>' +
+      'We Wish this tool will help fellow trainers :).<br/>',
+      confirmButtonText:
+      'close'
+    });
+  };
 
 });

@@ -49,6 +49,7 @@ app.post('/fetch', function(req, res) {
   pokegoScan(coords, {distance: distance}, function(err, pokemon) {
       if (err) {
         // DO nothing
+        console.log("Fetch on cooldown");
         res.send(503,JSON.stringify({
           status: "Server is busy"
         }));

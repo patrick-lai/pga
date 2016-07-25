@@ -68,17 +68,32 @@ angular
 .run(function($http, $rootScope, lodash, localStorageService, ngAudio, vibrator){
   $rootScope.notificationMp3 = ngAudio.load('audio/notification.mp3');
   $rootScope.pokemons = [];
+  $rootScope.watchedPokemons = [];
+
   $rootScope.watchPokemon = function(pokemon){
-    return localStorageService.set(parseInt(pokemon.id), true);
+    var pokemonId = parseInt(pokemon.id);
+    if($rootScope.watchedPokemons == null){
+      $rootScope.watchedPokemons = [];
+    }
+    if(lodash.includes($rootScope.watchedPokemons, pokemonId)){
+      // Do nothing
+    }else{
+      $rootScope.watchedPokemons.push(pokemonId);
+      localStorageService.set('watchedPokemons', JSON.stringify($rootScope.watchedPokemons));
+    }
   };
 
   $rootScope.unWatchPokemon = function(pokemon){
-    return localStorageService.remove(parseInt(pokemon.id));
+    if($rootScope.watchedPokemons == null){
+      $rootScope.watchedPokemons = [];
+    }
+    var pokemonId = parseInt(pokemon.id);
+    lodash.remove($rootScope.watchedPokemons, pokemonId);
+    localStorageService.set('watchedPokemons', JSON.stringify($rootScope.watchedPokemons));
   };
 
   $rootScope.isWatchingPokemon = function(pokemon){
-    var val = localStorageService.get(parseInt(pokemon.id));
-    return val != undefined && val != null;
+    return lodash.includes($rootScope.watchedPokemons, parseInt(pokemon.id));
   }
 
   $rootScope.setDistance = function(distance){
@@ -86,10 +101,24 @@ angular
     localStorageService.set('distance',distance);
   }
 
+  $rootScope.watchNone = function(){
+    $rootScope.watchedPokemons = [];
+    localStorageService.set('watchedPokemons', JSON.stringify($rootScope.watchedPokemons));
+    $rootScope.updateMap();
+  }
+
+  $rootScope.watchAll = function(){
+    $rootScope.watchedPokemons = [];
+    for(var p in $rootScope.pokemons){
+      $rootScope.watchPokemon($rootScope.pokemons[p]);
+    }
+    $rootScope.updateMap();
+  }
+
   // Setup Distance
   $rootScope.appSettings = {};
   $rootScope.appSettings.distance = localStorageService.get('distance');
-
+  $rootScope.watchedPokemons = JSON.parse(localStorageService.get('watchedPokemons'));
   $rootScope.notified = [];
 
   // set Default distance
