@@ -22,15 +22,15 @@ app.use(function(req, res, next) {
 
   var origin = req.headers.origin;
   if(allowedOrigins.indexOf(origin) > -1){
-    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Origin', origin);
   }
 
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  // Set custom headers for CORS
+  res.header("Access-Control-Allow-Headers", "Content-type,Accept,X-Custom-Header");
 
-  // Options
-  if (req.method === 'OPTIONS') {
-    res.send(200);
+  if (req.method === "OPTIONS") {
+      return res.status(200).end();
   }
 
   next();
