@@ -19,12 +19,20 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use(function(req, res, next) {
   var allowedOrigins = ['http://127.0.0.1:5000', 'http://localhost:5000', 'https://whereispokemon.com','https://www.whereispokemon.com','https://whereispokemon.herokuapp.com/', 'http://localhost:9000'];
+
   var origin = req.headers.origin;
   if(allowedOrigins.indexOf(origin) > -1){
-       res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Origin', origin);
   }
-  res.set('Access-Control-Allow-Methods','GET,POST');
+
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+  // Options
+  if (req.method === 'OPTIONS') {
+    res.send(200);
+  }
+
   next();
 });
 
