@@ -150,7 +150,7 @@ angular
 
 .service('pvApi', function($http, $geolocation, $rootScope){
 
-  this.baseUrl = "https://whereispokemon.com/fetch";
+  this.baseUrl = "https://www.whereispokemon.com/fetch";
 
   this.maxDistance = 1000;
 
