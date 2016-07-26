@@ -132,7 +132,7 @@ angular
     $rootScope.filteredPokemon =
     lodash.chain($rootScope.surroundingPokemon)
           .filter(function(p){
-            var include = $rootScope.isWatchingPokemon({id: p.pokemonId}) && p.distance <= $rootScope.appSettings.distance;
+            var include = $rootScope.isWatchingPokemon({id: p.pokemonId});
 
             if(!include){
               return false;

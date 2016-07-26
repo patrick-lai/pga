@@ -130,10 +130,12 @@ angular.module('pgaApp')
 
     // fetch data from api
     pvApi.fetchApiData($rootScope.currentLocation).then(function(response){
-      // Mark the map with pokemo
-      if(response.data.length){
+      // Mark the map with pokemon
+      if(!response.data.status) return;
+
+      if(response.data.pokemon.length){
         // Work out difference
-        var newData = response.data;
+        var newData = response.data.pokemon;
         var add = lodash.differenceWith(newData, $rootScope.surroundingPokemon, deepComare);
         var remove = lodash.differenceWith($rootScope.surroundingPokemon, newData, deepComare);
         var difference = lodash.union(add,remove);
