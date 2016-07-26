@@ -37,7 +37,7 @@
     "connect": "^3.4.1",
     "express": "~4.0.0",
     "gzippo": "^0.2.0",
-    "pokego-scan": "git@github.com:patrick-lai/pgascan.git",
+    "pokego-scan": "https://github.com/patrick-lai/pgascan.git",
     "body-parser": "^1.15.2",
     "engine.io-client": "^1.6.11",
     "lodash": "^4.13.1"
