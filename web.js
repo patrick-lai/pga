@@ -46,16 +46,8 @@ app.post('/fetch', function(req, res) {
 
   var distance = req.body.distance ? req.body.distance : 1000;
 
-  pokegoScan(coords, {distance: distance}, function(err, pokemon) {
-      if (err) {
-        // DO nothing
-        console.log("Fetch on cooldown");
-        res.send(503,JSON.stringify({
-          status: "Server is busy"
-        }));
-      }else{
-        res.send(JSON.stringify(pokemon));
-      }
+  pokegoScan(coords, {distance: distance}, function(pokemon) {
+    res.send(JSON.stringify(pokemon));
   });
 });
 
