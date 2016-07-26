@@ -33,12 +33,12 @@
              <i class="fa fa-question-circle interactive" aria-hidden="true"> <span>How to Use?</span>  </i>
            </div>
          </li>
-         <li style="padding: 1em;">
+         <!-- <li style="padding: 1em;">
            <md-slider-container>
              <span>Distance: {{appSettings.distance}}m </span>
              <md-slider flex min="1" max="1000" ng-model="appSettings.distance" ng-change="updateDistance(appSettings.distance)" aria-label="distance">
            </md-slider>
-         </li>
+         </li> -->
          <li layout="row" class="pokemon animate-fade">
              <div flex class="pop-text">
                <span class="pokemon-id interactive" ng-click="watchAll()">Show All</span>
@@ -68,7 +68,7 @@
 <div style="height: 100vh;">
 
     <md-button ng-click="toggleLeft()" class="md-raised md-primary" style="height: 50px; font-weight: bold; left: 0; position: fixed; z-index: 10; color: white;">
-      <span>Menu ({{surroundingPokemon.length}} total)</span>
+      <span>Menu ({{surroundingPokemon.length}} <i class="fa fa-eye pop-text interactive" aria-hidden="true"></i>)</span>
     </md-button>
 
     <div class="full-height" ng-include="'views/map.html'" ng-></div>
