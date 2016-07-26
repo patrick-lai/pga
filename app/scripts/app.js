@@ -87,7 +87,9 @@ angular
       $rootScope.watchedPokemons = [];
     }
     var pokemonId = parseInt(pokemon.id);
-    lodash.remove($rootScope.watchedPokemons, pokemonId);
+    lodash.remove($rootScope.watchedPokemons, function(p){
+      return p == pokemonId;
+    });
     localStorageService.set('watchedPokemons', JSON.stringify($rootScope.watchedPokemons));
   };
 
