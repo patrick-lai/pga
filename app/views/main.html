@@ -68,7 +68,7 @@
 <div style="height: 100vh;">
 
     <md-button ng-click="toggleLeft()" class="md-raised md-primary" style="height: 50px; font-weight: bold; left: 0; position: fixed; z-index: 10; color: white;">
-      <span>Menu ( {{surroundingPokemon.length}} <i class="fa fa-eye pop-text interactive" aria-hidden="true"></i> )</span>
+      <span>Menu ( {{filteredPokemon.length}}/{{surroundingPokemon.length}} <i class="fa fa-eye pop-text interactive" aria-hidden="true"></i> )</span>
     </md-button>
 
     <div class="full-height" ng-include="'views/map.html'" ng-></div>
