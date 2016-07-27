@@ -51,7 +51,7 @@ angular.module('pgaApp')
       }
     }
   };
-
+  
   $scope.appSettings = $rootScope.appSettings;
   $scope.loading = true;
   $scope.toggleLeft = buildDelayedToggler('left');

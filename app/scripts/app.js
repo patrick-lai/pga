@@ -171,14 +171,6 @@ angular
     $rootScope.pokemons = response.data;
   });
 
-  window.getSurroundingPokemon = function(){
-    return $rootScope.surroundingPokemon;
-  }
-
-  window.getFilteredPokemon = function(){
-    return $rootScope.filteredPokemon;
-  }
-
 })
 
 .service('pvApi', function($http, $geolocation, $rootScope){
