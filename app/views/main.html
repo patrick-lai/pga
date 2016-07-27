@@ -20,12 +20,11 @@
        <!-- content -->
        <md-input-container style="margin: 1em; margin-bottom: 0;">
           <label>Search</label>
+          <input ng-model="findFilter" ng-model-options="{debounce: 80}">
           <md-icon class="name">
             <i class="fa fa-times interactive pop-text" ng-click="findFilter = ''" aria-hidden="true"></i>
           </md-icon>
-          <input ng-model="findFilter" ng-model-options="{debounce: 80}">
        </md-input-container>
-
 
        <ul style="margin: 0;">
          <li class="pokemon pop-text">
@@ -39,11 +38,16 @@
              <md-slider flex min="1" max="1000" ng-model="appSettings.distance" ng-change="updateDistance(appSettings.distance)" aria-label="distance">
            </md-slider>
          </li> -->
+         <!-- <li style="padding: 0 1em;">
+           <md-switch ng-model="followLocation" aria-label="follow location">
+              Use Current Location: {{followLocation ? 'yes' : 'no'}}
+            </md-switch>
+         </li> -->
          <li layout="row" class="pokemon animate-fade">
              <div flex class="pop-text">
                <span class="pokemon-id interactive" ng-click="watchAll()">Show All</span>
              </div>
-             <div flex style="max-width: 30px; text-align: right;" ng-click="watchNone()">
+             <div flex style="max-width: 50px; text-align: right;" ng-click="watchNone()">
                <i class="fa fa-times pop-text interactive" aria-hidden="true"></i>
              </div>
          </li>

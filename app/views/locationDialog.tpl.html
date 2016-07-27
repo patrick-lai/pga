@@ -1,0 +1,55 @@
+<md-dialog aria-label="Mango (Fruit)">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Please Enable Locations</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px; ">
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Safari">
+          <md-content class="md-padding">
+            <h5 style="margin-bottom: 0;">Iphone</h5>
+            <ol style="margin-top: 0;">
+              <li>Leave Safari and go to your iPhone's Settings..</li>
+              <li>Tap Privacy > Location Services.</li>
+              <li>Scroll down and tap Safari Websites.</li>
+              <li>allow location 'While Using the App'.</li>
+            </ol>
+          </md-content>
+        </md-tab>
+        <md-tab label="Chrome">
+          <md-content class="md-padding">
+            <h5 style="margin-bottom: 0;">Iphone/Ipad</h5>
+            <ol style="margin-top: 0;">
+              <li>Open your device's settings app.</li>
+              <li>From the list, touch <strong>Chrome</strong>&nbsp;<img src="//lh3.googleusercontent.com/35K-QV6n3x2c-gyfU4G5ONI24hU2IhW7RRr2aRnFTttCziMzlwwxOkYXAKoaVeofr00p=w18-h18" width="18" height="18" alt="Chrome app" title="Chrome app">.&nbsp;</li>
+              <li>Touch&nbsp;<strong>Location.</strong></li>
+              <li>Choose to either have Chrome never access your location, or allow Chrome access to your location only while using the app.&nbsp;</li>
+            </ol>
+
+            <h5 style="margin-bottom: 0;">Android</h5>
+            <ol style="margin-top: 0;">
+              <li>Open the Google Chrome app <img src="//lh3.googleusercontent.com/35K-QV6n3x2c-gyfU4G5ONI24hU2IhW7RRr2aRnFTttCziMzlwwxOkYXAKoaVeofr00p=w18-h18" width="18" height="18" alt="Chrome app" title="Chrome app">.</li>
+              <li>Touch More <img src="//lh3.ggpht.com/N5LLlFszQeMqXo6Z6UF1VXFN4k3UxO8H8ZU3FV8AjUhomHuRCrwUeKMg1BhuFxKwqQ=w18-h18" width="18" height="18" alt="More" title="More">.</li>
+              <li>Touch <strong>Settings</strong> &gt; <strong>Site settings</strong> &gt; <strong>Location</strong>.</li>
+              <li>Use the switch to either have Chrome ask before accessing your location, or to block all sites from accessing your location.</li>
+              <li>Touch the specific blocked or allowed sites to manage exceptions.</li>
+            </ol>
+
+          </md-content>
+        </md-tab>
+      </md-tabs>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised" ng-click="hide()" >
+        Ok
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

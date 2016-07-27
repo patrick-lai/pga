@@ -9,7 +9,7 @@
 */
 
 angular.module('pgaApp')
-.controller('MainCtrl' , function ($scope, $timeout, $interval, $mdSidenav, $rootScope, $http, lodash, pgaTable, $sce, $geolocation, pvApi, $moment) {
+.controller('MainCtrl' , function ($scope, $timeout, $interval, $mdDialog, $mdSidenav, $rootScope, $http, lodash, pgaTable, $sce, $geolocation, pvApi, $moment) {
 
   function buildDelayedToggler(navID) {
     return debounce(function() {
@@ -34,6 +34,23 @@ angular.module('pgaApp')
       }, wait || 10);
     };
   }
+
+  $scope.followLocation = true;
+
+  $scope.isDraggable = function(){
+    return !$scope.followLocation;
+  }
+
+  $scope.selfMarker = {
+    idKey: 'currentPosition',
+    options: { draggable: $scope.isDraggable() },
+    markersEvents: {
+      dragend: function (mapModel, eventName, marker) {
+          $rootScope.currentLocation = marker.coords;
+          updateData();
+      }
+    }
+  };
 
   $scope.appSettings = $rootScope.appSettings;
   $scope.loading = true;
@@ -71,15 +88,39 @@ angular.module('pgaApp')
     $mdSidenav(side).close();
   };
 
+  $scope.myPosition.error
+
 
   $geolocation.getCurrentPosition({
-    timeout: 60000
+    timeout: 10000
   }).then(function(position) {
-    if($scope.myPosition.error){
-      swal("Please allow locations for this app to work");
+    if($scope.followLocation){
+      $rootScope.currentLocation = position.coords;
     }
-    $rootScope.currentLocation = position.coords;
     updateData();
+  });
+
+  $scope.$watch("myPosition.error",function(val){
+    if(val == undefined){
+      return;
+    }
+
+    if(val.code == 1){
+      $rootScope.currentLocation = sydneyLocation;
+      updateData();
+      // SHOW DIALOG
+      $mdDialog.show({
+        controller: DialogController,
+        templateUrl: 'views/locationDialog.tpl.html',
+        parent: angular.element(document.body),
+        clickOutsideToClose:true
+      })
+      .then(function(answer) {
+        $scope.status = 'You said the information was "' + answer + '".';
+      }, function() {
+        $scope.status = 'You cancelled the dialog.';
+      });
+    }
   });
 
 
@@ -125,7 +166,7 @@ angular.module('pgaApp')
     }
 
     function deepComare(a,b){
-      return a.id == b.id
+      return a.pokemonId == b.pokemonId && a.latitude == b.latitude && a.longitude == b.longitude;
     }
 
     // fetch data from api
@@ -141,8 +182,6 @@ angular.module('pgaApp')
         var difference = lodash.union(add,remove);
 
         $rootScope.surroundingPokemon = lodash.unionWith($rootScope.surroundingPokemon, add, deepComare);
-
-        console.log(remove);
 
         lodash.remove($rootScope.surroundingPokemon,function(p){
           return lodash.some(remove,{ id : p.id });
@@ -194,3 +233,9 @@ angular.module('pgaApp')
   };
 
 });
+
+function DialogController($scope, $mdDialog) {
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
+}
