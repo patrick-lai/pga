@@ -140,11 +140,14 @@ angular.module('pgaApp')
         var remove = lodash.differenceWith($rootScope.surroundingPokemon, newData, deepComare);
         var difference = lodash.union(add,remove);
 
-        $rootScope.surroundingPokemon = lodash.unionWith($rootScope.surroundingPokemon,add, deepComare);
+        $rootScope.surroundingPokemon = lodash.unionWith($rootScope.surroundingPokemon, add, deepComare);
+
+        console.log(remove);
 
         lodash.remove($rootScope.surroundingPokemon,function(p){
-          return lodash.includes(remove,p.id);
+          return lodash.some(remove,{ id : p.id });
         });
+
         $scope.loading = false;
       }
     },function(error){
