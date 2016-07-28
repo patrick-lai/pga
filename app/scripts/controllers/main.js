@@ -215,7 +215,7 @@ angular.module('pgaApp')
 
   // Follow you around the map
   $scope.$on('$geolocation.position.changed', function(event, newPosition){
-    if(!newPosition){
+    if(!newPosition || !$scope.followLocation){
       return;
     }
     $rootScope.currentLocation = newPosition.coords;
