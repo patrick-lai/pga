@@ -38,11 +38,11 @@
              <md-slider flex min="1" max="1000" ng-model="appSettings.distance" ng-change="updateDistance(appSettings.distance)" aria-label="distance">
            </md-slider>
          </li> -->
-         <!-- <li style="padding: 0 1em;">
-           <md-switch ng-model="followLocation" aria-label="follow location">
+         <li style="padding: 0 1em;">
+           <md-switch ng-model="$parent.followLocation" aria-label="follow location">
               Use Current Location: {{followLocation ? 'yes' : 'no'}}
             </md-switch>
-         </li> -->
+         </li>
          <li layout="row" class="pokemon animate-fade">
              <div flex class="pop-text">
                <span class="pokemon-id interactive" ng-click="watchAll()">Show All</span>

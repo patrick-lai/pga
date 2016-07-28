@@ -160,20 +160,24 @@ img.pop {
   border-color: black;
 }
 
-md-slider.md-default-theme .md-track.md-track-fill, md-slider .md-track.md-track-fill {
+md-slider .md-thumb,
+md-slider.md-default-theme .md-track.md-track-fill, md-slider .md-track.md-track-fill,
+md-switch.md-default-theme.md-checked .md-thumb, md-switch.md-checked .md-thumb{
     background-color: #FF754A !important;
     border-color: #FF754A !important;
 }
-md-slider .md-thumb{
-    background-color: #FF754A !important;
+
+md-switch.md-default-theme.md-checked .md-ink-ripple, md-switch.md-checked .md-ink-ripple{
+    color: #FF754A !important;
 }
+
+md-switch.md-default-theme.md-checked .md-bar, md-switch.md-checked .md-bar{
+  background-color: #98543e !important;
+}
+
 md-slider.md-default-theme .md-thumb:after, md-slider .md-thumb:after{
   background-color: #333 !important;
   border-color: #222 !important;
-}
-
-md-slider.md-default-theme .md-focus-ring, md-slider .md-focus-ring{
-  background-color: #777 !important;
 }
 
 li.pokemon{

@@ -37,21 +37,28 @@ angular.module('pgaApp')
 
   $scope.followLocation = true;
 
-  $scope.isDraggable = function(){
-    return !$scope.followLocation;
-  }
-
   $scope.selfMarker = {
     idKey: 'currentPosition',
-    options: { draggable: $scope.isDraggable() },
+    options: {
+      draggable: !$scope.followLocation
+    },
     markersEvents: {
       dragend: function (mapModel, eventName, marker) {
           $rootScope.currentLocation = marker.coords;
           updateData();
       }
-    }
+    },
+    markersControl: {}
   };
-  
+
+  // Seems to only udpate this way
+  $scope.$watch('followLocation', function(){
+    // Update draggable
+    if(typeof $scope.selfMarker.markersControl.getGMarkers == 'function'){
+      $scope.selfMarker.markersControl.getGMarkers()[0].model.options.draggable = !$scope.followLocation;
+    }
+  })
+
   $scope.appSettings = $rootScope.appSettings;
   $scope.loading = true;
   $scope.toggleLeft = buildDelayedToggler('left');
@@ -143,6 +150,10 @@ angular.module('pgaApp')
     center: sydneyLocation,
     zoom: zoom,
     markers: [],
+    options: {
+      streetViewControl: false,
+      mapTypeControl: false
+    },
     markersEvents: {
       click: function(marker, eventName, model) {
         $scope.map.window.model = model;

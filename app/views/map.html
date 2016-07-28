@@ -1,5 +1,5 @@
 <div class="full-height">
-  <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+  <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
     <ui-gmap-markers
             models='filteredPokemon'
             idKey="'id'"
@@ -9,6 +9,6 @@
             >
     </ui-gmap-markers>
     <ui-gmap-window show="map.window.show" coords="map.window.model" options="map.window.options" closeClick="map.window.closeClick()" templateUrl="'views/infowindow.tpl.html'" templateParameter="map.window"></ui-gmap-window>
-    <ui-gmap-marker coords="map.center" idKey="'myPosition'" options="selfMarker.options" events="selfMarker.markersEvents"></ui-gmap-marker>
+    <ui-gmap-marker control="selfMarker.markersControl" coords="map.center" idKey="selfMarker.idKey" options="selfMarker.options" events="selfMarker.markersEvents"></ui-gmap-marker>
   </ui-gmap-google-map>
 </div>
